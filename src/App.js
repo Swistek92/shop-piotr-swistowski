@@ -1,41 +1,45 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  HttpLink,
-  from,
-  useQuery,
-} from '@apollo/client';
-import { onError } from '@apollo/client/link/error';
-import { LOAD_PRODUCTS } from './GraphQL/Queries';
-import { useLocalStorage } from './utilites/useLocalStorage';
-import { useEffect } from 'react';
+import React, { Component } from 'react';
+
+// import ListPage from './Components/Main/ListPage';
+import Header from './Components/Header/Header';
 import ListPage from './Components/Main/ListPage';
-const errorLink = onError(({ graphqlErrors, networkError }) => {
-  if (graphqlErrors) {
-    graphqlErrors.map(({ message, location, path }) => {
-      alert(`Graphql error ${message}`);
+import { LOAD_LIST_PRODUCT } from './GraphQL/Queries';
+
+class App extends Component {
+  state = {
+    products: [],
+    categorys: ['all'],
+  };
+
+  componentDidMount = async () => {
+    const data = await fetch('http://localhost:4000/graphql', {
+      method: 'POST',
+
+      headers: {
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+        query: LOAD_LIST_PRODUCT,
+      }),
     });
+    const products = await data.json();
+    this.setState({ products: products.data.category.products });
+    this.state.products.forEach(
+      (e) =>
+        !this.state.categorys.includes(e.category) &&
+        this.state.categorys.push(e.category)
+    );
+  };
+
+  render() {
+    return (
+      <div>
+        <Header categorys={this.state.categorys} />
+        <ListPage products={this.state.products} />
+      </div>
+    );
   }
-});
-
-const link = from([
-  errorLink,
-  new HttpLink({ uri: 'http://localhost:4000/graphql' }),
-]);
-
-const client = new ApolloClient({
-  cache: new InMemoryCache(),
-  link: link,
-});
-
-function App() {
-  return (
-    <ApolloProvider client={client}>
-      <ListPage />
-      <h1>ads</h1>
-    </ApolloProvider>
-  );
 }
 
 export default App;
