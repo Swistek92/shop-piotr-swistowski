@@ -17,7 +17,7 @@
 
 .links li {
   display: inline-block;
-  padding: 0 20px;
+  padding: 10px 20px;
   transition: all 0.3s ease 0s;
   cursor: pointer;
   font-weight: 600;
@@ -29,53 +29,8 @@
 }
 
 .buttons {
+  list-style: none;
   display: flex;
   padding: 0 10px;
   cursor: pointer;
-}
-.buttons div {
-  margin-left: 20px;
-}
-
-.dropdown {
-  position: relative;
-}
-
-.dropdownCart {
-  position: absolute;
-  background-color: antiquewhite;
-  left: -150px;
-  top: calc(100% + 0.25rem);
-  padding: 0.75rem;
-  border-radius: 0.25rem;
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  transition: opacity 150ms ease-in, transform 150ms ease-in-out;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.dropdown > .link:focus + .dropdownCart {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.link {
-  background: none;
-  border: none;
-  text-decoration: none;
-}
-.cartItem {
-  min-width: 200px;
-}
-
-.title {
-  font-size: 12px;
-  display: flex;
-  justify-content: left;
-  text-align: left;
 }

@@ -37,8 +37,10 @@
   padding: 16px;
   min-height: 100px;
   max-height: 60vh;
+  max-width: 50vh;
   overflow: hidden;
   cursor: pointer;
+  margin: 0 auto;
 }
 
 .card:hover {
@@ -64,6 +66,12 @@
 .price {
   height: 29px;
   font-weight: 600;
+}
+.link {
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  color: black;
 }
 
 @keyframes opacity {

@@ -2,16 +2,19 @@
 import { Component } from 'react';
 import styles from './style.module.css';
 import { connect } from 'react-redux';
-import { changeCategory } from '../../Store/ItemsSlice';
+import { changeCategory, changeCurrency } from '../../Store/ItemsSlice';
+import CurenncyModal from '../Modals/Currency/CurenncyModal';
+import CartModal from '../Modals/Cart/CartModal';
+import { Link } from 'react-router-dom';
 export class Header extends Component {
   categories = () => {
-    console.log(this.props);
     if (this.props.items.categories === []) return;
     return this.props.items.categories.map((e) => {
       const isCurrentCategory = e === this.props.items.currentCategory;
 
       return (
         <li
+          key={e}
           style={{
             color: isCurrentCategory && 'green',
             textDecoration: isCurrentCategory && 'underline',
@@ -23,21 +26,19 @@ export class Header extends Component {
       );
     });
   };
+  // <div onClick={() => console.log('asdas')}>{currentCurency.symbol}</div>
 
   render() {
     return (
       <header className={styles.container}>
-        <ul className={styles.links}>{this.categories()}</ul>
-        <h5>Logo</h5>
+        <p className={styles.links}>{this.categories()}</p>
+
+        <Link to='/'>
+          <p>Logo</p>
+        </Link>
         <div className={styles.buttons}>
-          <div>$</div>
-          <div className={styles.dropdown}>
-            <button className={styles.link}>Cart</button>
-            <div className={styles.dropdownCart}>
-              <div className={styles.title}>My bag. 3 items</div>
-              <div className={styles.cartItem}></div>
-            </div>
-          </div>
+          <CurenncyModal />
+          <CartModal />
         </div>
       </header>
     );
@@ -50,6 +51,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 const actionsCreators = {
   changeCategory,
+  changeCurrency,
 };
 
 export default connect(mapStateToProps, actionsCreators)(Header);

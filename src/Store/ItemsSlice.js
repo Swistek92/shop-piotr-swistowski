@@ -2,9 +2,12 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   products: [],
-  currency: 'USD',
   categories: ['all'],
   currentCategory: 'all',
+  currency: [],
+  currentCurency: { label: 'USD', symbol: '$' },
+  displayCurrencyModal: false,
+  displayCartModal: false,
 };
 
 const avilableCurrency = ['USD', 'GBP', 'AUD', 'JPY', 'RUB'];
@@ -13,21 +16,32 @@ export const itemsSlice = createSlice({
   name: 'items',
   initialState,
   reducers: {
-    addCategories(state, action) {
-      state.categories = action.payload;
-    },
     addProducts(state, action) {
       state.products = action.payload;
     },
-    changeCurrency(state, action) {
-      if (!avilableCurrency.includes(action.payload)) return;
-      state.currency = action.payload;
+    addCategories(state, action) {
+      state.categories = action.payload;
     },
     changeCategory(state, action) {
       state.currentCategory = action.payload;
     },
+    addCurrency(state, action) {
+      state.currency = action.payload;
+    },
+    changeCurrency(state, action) {
+      state.currentCurency = action.payload;
+      console.log(action.payload);
+    },
+    toggleCurrencyModal(state) {
+      state.displayCurrencyModal = !state.displayCurrencyModal;
+    },
   },
 });
 
-export const { changeCurrency, addProducts, addCategories, changeCategory } =
-  itemsSlice.actions;
+export const {
+  changeCurrency,
+  addProducts,
+  addCategories,
+  changeCategory,
+  addCurrency,
+} = itemsSlice.actions;
