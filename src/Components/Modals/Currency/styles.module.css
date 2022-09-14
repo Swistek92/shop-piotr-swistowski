@@ -51,3 +51,18 @@
   background-color: rgb(177, 177, 177);
   border-radius: 20%;
 }
+
+.btn {
+  display: flex;
+  font-size: 15px;
+  padding: 10px;
+  width: 100%;
+  border: none;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background-color: #808080e7;
+}

@@ -25,22 +25,10 @@ class Product extends Component {
         attributes: this.state.attributes,
         item,
       };
+      addToCart(cartItem);
       this.setState({ redirect: true });
-      // this.props.navigate('/');
-      // addToCart();
     }
   }
-  componentDidMount() {
-    console.log(this.props);
-  }
-
-  componentDidUpdate() {
-    console.log(this.state);
-  }
-
-  changeState = (name, value) => {
-    this.setState({ name: value });
-  };
 
   imgs = (gallery) => {
     return gallery.map((e, i) => {
@@ -69,6 +57,8 @@ class Product extends Component {
     if (this.state.attributes.length < 1) {
       this.setState({ attributes });
     }
+
+    console.log(item.description);
     return (
       <div>
         <h3>{item.name}</h3>
@@ -83,24 +73,44 @@ class Product extends Component {
                 const selected = e.id;
                 const name = attributes[i].name;
                 const isSelected = e.id === this.state.attributes[i].selected;
-                return (
-                  <div
-                    style={{
-                      backgroundColor: isSelected && 'black',
-                      color: isSelected && 'white',
-                    }}
-                    onClick={() =>
-                      this.setState({
-                        attributes: this.state.attributes.map((e) =>
-                          e.name === name ? { ...e, selected } : e
-                        ),
-                      })
-                    }
-                    className={styles.attributes}
-                  >
-                    {e.displayValue}
-                  </div>
-                );
+                if (name === 'Color') {
+                  return (
+                    <button
+                      className={styles.colorAttribute}
+                      style={{
+                        backgroundColor: e.value,
+                        color: e.value,
+                        border: isSelected && '1px solid #5ECE7B',
+                        scale: isSelected && 'calc(1.25)',
+                      }}
+                      onClick={() =>
+                        this.setState({
+                          attributes: this.state.attributes.map((e) =>
+                            e.name === name ? { ...e, selected } : e
+                          ),
+                        })
+                      }
+                    ></button>
+                  );
+                } else
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: isSelected && 'black',
+                        color: isSelected && 'white',
+                      }}
+                      onClick={() =>
+                        this.setState({
+                          attributes: this.state.attributes.map((e) =>
+                            e.name === name ? { ...e, selected } : e
+                          ),
+                        })
+                      }
+                      className={styles.attributes}
+                    >
+                      {e.value}
+                    </div>
+                  );
               })}
             </>
           );
@@ -113,19 +123,19 @@ class Product extends Component {
         <button onClick={() => this.addToCart(addToCart, item)}>
           Add to cart
         </button>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Sapiente,
-          consequatur.
-        </p>
+        <div dangerouslySetInnerHTML={{ __html: item.description }} />
       </div>
     );
   };
 
   render() {
+    const parser = new DOMParser();
+
     const { products, currentCurency } = this.props.items;
     const { selectItem } = this.props.cart;
     const item = products.find((e) => e.id === selectItem);
     const addToCart = this.props.addToCart;
+
     return (
       <main className={styles.main}>
         <div className={styles.imgs}>{this.imgs(item.gallery)}</div>
@@ -133,7 +143,7 @@ class Product extends Component {
         <div className={styles.details}>
           {this.details(item, currentCurency, addToCart)}
         </div>
-        {this.state.redirect && <Navigate to='/' replace={true} />}
+        {this.state.redirect && <Navigate to='/cart' replace={true} />}
       </main>
     );
   }
@@ -147,9 +157,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const actionsCreators = { addToCart };
 
-function withParams(Product) {
-  return (props) => <Product {...props} navigate={useNavigate()} />;
-}
+// function withParams(Product) {
+//   return (props) => <Product {...props} navigate={useNavigate()} />;
+// }
 
 export default connect(mapStateToProps, actionsCreators)(Product);
 // export default withParams(connect(mapStateToProps, actionsCreators)(Product));

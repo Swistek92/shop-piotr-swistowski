@@ -8,20 +8,22 @@ import { selectItem } from '../../Store/CartSlice';
 class ListPage extends Component {
   items = () => {
     const { products, currentCategory } = this.props.items;
-
     if (!products) return;
     let filtered = products;
 
     if (currentCategory !== 'all') {
       filtered = filtered.filter((e) => e.category === currentCategory);
     }
-    // console.log(this.props);
     return filtered.map((e) => {
+      const selectedCurrency = this.props.items.currentCurency.label;
+      const price = e.prices.find((e) => e.currency.label === selectedCurrency);
       return (
         <div key={e.id} className={styles.card}>
           <img className={styles.img} src={e.gallery[0]} alt={e.id} />
           <p className={styles.title}> {e.name}</p>
-          <p className={styles.price}> $ {e.prices[0].amount}</p>
+          <p className={styles.price}>
+            {price.currency.symbol} {price.amount}
+          </p>
           <Link
             onClick={() => this.props.selectItem(e.id)}
             to={`/product/${e.id}`}
@@ -35,7 +37,6 @@ class ListPage extends Component {
   };
 
   render() {
-    // console.log(this.props);
     const { currentCategory } = this.props.items;
     return (
       <main className={styles.main}>

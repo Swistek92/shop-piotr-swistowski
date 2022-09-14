@@ -10,8 +10,6 @@ const initialState = {
   displayCartModal: false,
 };
 
-const avilableCurrency = ['USD', 'GBP', 'AUD', 'JPY', 'RUB'];
-
 export const itemsSlice = createSlice({
   name: 'items',
   initialState,

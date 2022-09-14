@@ -16,9 +16,13 @@ class CurenncyModal extends Component {
         <div className={styles.dropdownContent}>
           {filteredCurrency.map((e) => {
             return (
-              <a key={e.label} onClick={() => this.props.changeCurrency(e)}>
+              <button
+                className={styles.btn}
+                key={e.label}
+                onClick={() => this.props.changeCurrency(e)}
+              >
                 {e.symbol} {e.label}
-              </a>
+              </button>
             );
           })}
         </div>

@@ -1,41 +1,17 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import styles from './styles.module.css';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import {
   selectAttributes,
   incrementQuantity,
   decrementQuantity,
-  updateQuanity,
-  updateTotal,
-} from '../../../Store/CartSlice';
-import { Link, Navigate } from 'react-router-dom';
+} from '../../Store/CartSlice';
 
-class CartModal extends Component {
-  state = {
-    redirect: false,
-  };
+class Cart extends Component {
   items = () => {
     const cart = this.props.cart.cart;
     const selectedCurrency = this.props.items.currentCurency.label;
-    let totalquanity = 0;
-    let totalPrice = 0;
-    console.log(this.props);
-    cart.forEach((element, i) => {
-      totalquanity += element.quantity;
-      const { amount } = cart[i].item.prices.find(
-        (e) => e.currency.label === selectedCurrency
-      );
-      totalPrice += amount * element.quantity;
-    });
-
-    if (totalquanity !== this.props.cart.quantity) {
-      this.props.updateQuanity(totalquanity);
-    }
-    console.log(this.props);
-
-    if (totalPrice !== this.props.cart.total) {
-      this.props.updateTotal(totalPrice);
-    }
     return cart.map((e) => {
       const price = e.item.prices.find(
         (e) => e.currency.label === selectedCurrency
@@ -60,6 +36,7 @@ class CartModal extends Component {
                     <p>{name}</p>
                     {e.items.map((e) => {
                       const isSelected = e.id === selected;
+                      // console.log(e);
                       if (name === 'Color') {
                         return (
                           <button
@@ -122,53 +99,34 @@ class CartModal extends Component {
               />
             </div>
           </div>
+          <hr />
         </>
       );
     });
   };
 
   render() {
+    const { currentCategory } = this.props.items;
     return (
-      <div className={styles.dropdown}>
-        <button className={styles.dropbtn}>Cart</button>
-        <div className={styles.dropdownContent}>
-          <p>
-            <b>My Bag.</b> {this.props.cart.quanity} items
-          </p>
-          {this.items()}
-
-          <div className={styles.totalPrice}>
-            <p> total price: </p>
-            <p>
-              {this.props.cart.total.toFixed(2)}
-              {this.props.items.currentCurency.symbol}
-            </p>
-          </div>
-          <div className={styles.btns}>
-            <Link className={styles.bagBtn} to='/cart'>
-              <p>view bag</p>
-            </Link>
-            <Link className={styles.checkOutBtn} to='#'>
-              Checkout
-            </Link>
-          </div>
-        </div>
-        {this.state.redirect && <Navigate to='/cart' replace={true} />}
-      </div>
+      <main className={styles.main}>
+        <h1>CART</h1>
+        <hr />
+        {this.items()}
+      </main>
     );
   }
 }
-const mapStateToProps = (state, ownProps) => {
-  const { items, cart } = state;
 
-  return { items, cart };
+const mapStateToProps = (state, ownProps) => {
+  const { cart, items } = state;
+
+  return { cart, items };
 };
+
 const actionsCreators = {
   selectAttributes,
-  decrementQuantity,
   incrementQuantity,
-  updateQuanity,
-  updateTotal,
+  decrementQuantity,
 };
 
-export default connect(mapStateToProps, actionsCreators)(CartModal);
+export default connect(mapStateToProps, actionsCreators)(Cart);

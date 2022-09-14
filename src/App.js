@@ -7,7 +7,7 @@ import { Routes, Route, Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { addCategories, addProducts, addCurrency } from './Store/ItemsSlice';
 import Product from './Components/Product/Product';
-
+import Cart from './Components/Cart/Cart';
 class App extends Component {
   state = {
     products: [],
@@ -16,10 +16,6 @@ class App extends Component {
     cart: [
       { itemId: 'huarache-x-stussy-le ', score: 1, attributes: { size: 42 } },
     ],
-  };
-
-  changeCateogry = (category) => {
-    this.setState({ currentCategory: category });
   };
 
   componentDidMount = async () => {
@@ -43,9 +39,11 @@ class App extends Component {
       (e) =>
         !cateogiresList.includes(e.category) && cateogiresList.push(e.category)
     );
+
     this.state.products[0].prices.forEach((e) => {
       availableCurrency.push(e.currency);
     });
+
     this.props.addCurrency(availableCurrency);
     this.props.addCategories(cateogiresList);
   };
@@ -58,6 +56,7 @@ class App extends Component {
         <Routes>
           <Route path='/' element={<ListPage />} />
           <Route path='/product/:id' element={<Product />} />
+          <Route path='/cart/' element={<Cart />} />
         </Routes>
       </div>
     );
