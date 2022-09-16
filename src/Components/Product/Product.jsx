@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import styles from './style.module.css';
 import { connect } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useParams } from 'react-router-dom';
 import { addToCart } from '../../Store/CartSlice';
 import { Navigate } from 'react-router-dom';
 
@@ -57,15 +55,16 @@ class Product extends Component {
         {this.state.attributes.length >= 1 &&
           item.attributes.map((e, i) => {
             return (
-              <>
+              <div key={i}>
                 <p>{e.name}</p>
-                {e.items.map((e) => {
+                {e.items.map((e, index) => {
                   const selected = e.id;
                   const name = attributes[i].name;
                   const isSelected = e.id === this.state.attributes[i].selected;
                   if (name === 'Color') {
                     return (
                       <button
+                        key={index}
                         className={styles.colorAttribute}
                         style={{
                           backgroundColor: e.value,
@@ -85,6 +84,7 @@ class Product extends Component {
                   } else
                     return (
                       <div
+                        key={index}
                         style={{
                           backgroundColor: isSelected && 'black',
                           color: isSelected && 'white',
@@ -102,7 +102,7 @@ class Product extends Component {
                       </div>
                     );
                 })}
-              </>
+              </div>
             );
           })}
         <p>Price</p>
@@ -126,7 +126,7 @@ class Product extends Component {
     }
 
     const item = products.find((e) => e.id === selectItem);
-
+    // this.attributes(item);
     let attributes;
     if (item.attributes.length >= 1) {
       attributes = JSON.parse(JSON.stringify(item.attributes));

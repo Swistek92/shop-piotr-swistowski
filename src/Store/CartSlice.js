@@ -73,7 +73,6 @@ export const cartSlice = createSlice({
       const attrIndex = state.cart[itemIndex].attributes.findIndex(
         (e) => e.name === action.payload[1]
       );
-      console.log(attrIndex);
       state.cart[itemIndex].attributes[attrIndex].selected = action.payload[2];
       refreshLocalStorage(state);
     },

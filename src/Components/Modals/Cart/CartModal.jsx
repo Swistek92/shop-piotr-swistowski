@@ -148,7 +148,7 @@ class CartModal extends Component {
       <div className={styles.dropdown}>
         <button className={styles.dropbtn}>
           <img src={Logo} alt='logo' />
-          <>{this.props.cart.quanity}</>
+          <div className={styles.logoQuanity}>{this.props.cart.quanity}</div>
         </button>
         <div className={styles.dropdownContent}>
           <p>

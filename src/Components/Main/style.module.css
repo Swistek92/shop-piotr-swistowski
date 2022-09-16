@@ -28,8 +28,8 @@
 }
 
 .card {
-  /* animation: opacity 1s ease-in; */
-  /* position: relative; */
+  animation: opacity 2s ease-in;
+  /* position: rselative; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -38,7 +38,7 @@
   min-height: 100px;
   max-height: 60vh;
   max-width: 50vh;
-  overflow: hidden;
+  /* overflow: hidden; */
   /* cursor: pointer; */
   margin: 0 auto;
 }
@@ -50,11 +50,12 @@
 .img {
   width: 100%;
   display: block;
-  max-height: 80%;
+  max-height: 70%;
   transition: all 0.5s ease-in;
+  /* transform: scale(0.9); */
 }
 .img:hover {
-  transform: scale(1.05);
+  /* transform: scale(1); */
 }
 
 .title {
@@ -66,6 +67,7 @@
 .price {
   height: 29px;
   font-weight: 600;
+  margin-bottom: 50px;
 }
 .link {
   text-decoration: none;
@@ -76,18 +78,15 @@
 
 .btnDetails {
   display: flex;
-  /* align-items: center; */
   position: relative;
   margin-left: auto;
   bottom: 30px;
-  /* justify-content: right; */
 
-  /* left: 100x; */
-  /* bottom: 80px; */
   cursor: pointer;
-  /* display: flex; */
-  /* right: 100px; */
-  /* margin-right: 100px; */
+  transition: all 0.1s ease-in;
+}
+.btnDetails:hover {
+  transform: scale(1.2);
 }
 
 @keyframes opacity {

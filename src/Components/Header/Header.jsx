@@ -28,7 +28,6 @@ export class Header extends Component {
       );
     });
   };
-  // <div onClick={() => console.log('asdas')}>{currentCurency.symbol}</div>
 
   render() {
     return (
@@ -36,7 +35,6 @@ export class Header extends Component {
         <p className={styles.links}>{this.categories()}</p>
 
         <Link to='/'>
-          {/* <p>Logo</p> */}
           <img src={Logo} alt='logo' />
         </Link>
         <div className={styles.buttons}>

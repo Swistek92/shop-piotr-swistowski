@@ -12,7 +12,7 @@ class Cart extends Component {
   items = () => {
     const cart = this.props.cart.cart;
     const selectedCurrency = this.props.items.currentCurency.label;
-    return cart.map((e) => {
+    return cart.map((e, i) => {
       const price = e.item.prices.find(
         (e) => e.currency.label === selectedCurrency
       );
@@ -20,7 +20,7 @@ class Cart extends Component {
       const itemId = e.item.id;
       const quantity = e.quantity;
       return (
-        <>
+        <div key={i}>
           <div className={styles.cartItem}>
             <div>
               <p> {e.item.name}</p>
@@ -28,18 +28,18 @@ class Cart extends Component {
               <p>
                 {price.amount} {price.currency.symbol}
               </p>
-              {e.attributes.map((e, i) => {
+              {e.attributes.map((e, index) => {
                 const selected = e.selected;
                 const name = e.name;
                 return (
-                  <>
+                  <div key={index}>
                     <p>{name}</p>
-                    {e.items.map((e) => {
+                    {e.items.map((e, itemIndex) => {
                       const isSelected = e.id === selected;
-                      // console.log(e);
                       if (name === 'Color') {
                         return (
                           <button
+                            key={itemIndex}
                             className={styles.colorAttribute}
                             style={{
                               backgroundColor: e.value,
@@ -57,6 +57,7 @@ class Cart extends Component {
                       } else {
                         return (
                           <button
+                            key={itemIndex}
                             style={{
                               backgroundColor: isSelected && 'black',
                               color: isSelected && 'white',
@@ -72,7 +73,7 @@ class Cart extends Component {
                         );
                       }
                     })}
-                  </>
+                  </div>
                 );
               })}
             </div>
@@ -100,7 +101,7 @@ class Cart extends Component {
             </div>
           </div>
           <hr />
-        </>
+        </div>
       );
     });
   };
