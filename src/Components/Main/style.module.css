@@ -28,7 +28,7 @@
 }
 
 .card {
-  animation: opacity 2s ease-in;
+  /* animation: opacity 2s ease-in; */
   /* position: rselative; */
   display: flex;
   flex-direction: column;
