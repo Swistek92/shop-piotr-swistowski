@@ -6,6 +6,8 @@ import { changeCategory, changeCurrency } from '../../Store/ItemsSlice';
 import CurenncyModal from '../Modals/Currency/CurenncyModal';
 import CartModal from '../Modals/Cart/CartModal';
 import { Link } from 'react-router-dom';
+import Logo from './Logo.svg';
+
 export class Header extends Component {
   categories = () => {
     if (this.props.items.categories === []) return;
@@ -16,8 +18,8 @@ export class Header extends Component {
         <li
           key={e}
           style={{
-            color: isCurrentCategory && 'green',
-            textDecoration: isCurrentCategory && 'underline',
+            color: isCurrentCategory ? 'green' : undefined,
+            textDecoration: isCurrentCategory ? 'underline' : undefined,
           }}
           onClick={() => this.props.changeCategory(e)}
         >
@@ -34,7 +36,8 @@ export class Header extends Component {
         <p className={styles.links}>{this.categories()}</p>
 
         <Link to='/'>
-          <p>Logo</p>
+          {/* <p>Logo</p> */}
+          <img src={Logo} alt='logo' />
         </Link>
         <div className={styles.buttons}>
           <CurenncyModal />

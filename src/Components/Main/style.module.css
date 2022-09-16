@@ -29,17 +29,17 @@
 
 .card {
   /* animation: opacity 1s ease-in; */
-
+  /* position: relative; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: left;
-  padding: 16px;
+  padding: 10px;
   min-height: 100px;
   max-height: 60vh;
   max-width: 50vh;
   overflow: hidden;
-  cursor: pointer;
+  /* cursor: pointer; */
   margin: 0 auto;
 }
 
@@ -72,6 +72,22 @@
   margin: 0;
   padding: 0;
   color: black;
+}
+
+.btnDetails {
+  display: flex;
+  /* align-items: center; */
+  position: relative;
+  margin-left: auto;
+  bottom: 30px;
+  /* justify-content: right; */
+
+  /* left: 100x; */
+  /* bottom: 80px; */
+  cursor: pointer;
+  /* display: flex; */
+  /* right: 100px; */
+  /* margin-right: 100px; */
 }
 
 @keyframes opacity {

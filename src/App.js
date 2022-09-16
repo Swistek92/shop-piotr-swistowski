@@ -9,14 +9,14 @@ import { addCategories, addProducts, addCurrency } from './Store/ItemsSlice';
 import Product from './Components/Product/Product';
 import Cart from './Components/Cart/Cart';
 class App extends Component {
-  state = {
-    products: [],
-    categories: ['all'],
-    currentCategory: 'all',
-    cart: [
-      { itemId: 'huarache-x-stussy-le ', score: 1, attributes: { size: 42 } },
-    ],
-  };
+  // state = {
+  //   products: [],
+  //   categories: ['all'],
+  //   currentCategory: 'all',
+  //   cart: [
+  //     { itemId: 'huarache-x-stussy-le ', score: 1, attributes: { size: 42 } },
+  //   ],
+  // };
 
   componentDidMount = async () => {
     const data = await fetch('http://localhost:4000/graphql', {
@@ -31,16 +31,15 @@ class App extends Component {
     });
 
     const products = await data.json();
-    this.setState({ products: products.data.category.products });
     this.props.addProducts(products.data.category.products);
     const cateogiresList = ['all'];
     const availableCurrency = [];
-    this.state.products.forEach(
+    products.data.category.products.forEach(
       (e) =>
         !cateogiresList.includes(e.category) && cateogiresList.push(e.category)
     );
 
-    this.state.products[0].prices.forEach((e) => {
+    products.data.category.products[0].prices.forEach((e) => {
       availableCurrency.push(e.currency);
     });
 

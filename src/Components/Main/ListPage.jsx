@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styles from './style.module.css';
 import { connect } from 'react-redux';
-
+import logo from './Logo.svg';
 import { Link } from 'react-router-dom';
 import { selectItem } from '../../Store/CartSlice';
 
@@ -20,17 +20,17 @@ class ListPage extends Component {
       return (
         <div key={e.id} className={styles.card}>
           <img className={styles.img} src={e.gallery[0]} alt={e.id} />
-          <p className={styles.title}> {e.name}</p>
-          <p className={styles.price}>
-            {price.currency.symbol} {price.amount}
-          </p>
           <Link
             onClick={() => this.props.selectItem(e.id)}
             to={`/product/${e.id}`}
             className={styles.link}
           >
-            Details
+            <img className={styles.btnDetails} src={logo} alt='logo' />
           </Link>
+          <p className={styles.title}> {e.name}</p>
+          <p className={styles.price}>
+            {price.currency.symbol} {price.amount}
+          </p>
         </div>
       );
     });

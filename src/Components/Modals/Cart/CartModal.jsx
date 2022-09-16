@@ -9,34 +9,24 @@ import {
   updateTotal,
 } from '../../../Store/CartSlice';
 import { Link, Navigate } from 'react-router-dom';
-
+import Logo from './Logo.svg';
 class CartModal extends Component {
   state = {
     redirect: false,
+    numberItemsInCart: this.props.cart.cart.length,
   };
+
+  componentDidUpdate = () => {
+    if (this.state.numberItemsInCart !== this.props.cart.cart.length) {
+      this.setState({ numberItemsInCart: this.props.cart.cart.length });
+    }
+  };
+
   items = () => {
     const cart = this.props.cart.cart;
     const selectedCurrency = this.props.items.currentCurency.label;
-    let totalquanity = 0;
-    let totalPrice = 0;
-    console.log(this.props);
-    cart.forEach((element, i) => {
-      totalquanity += element.quantity;
-      const { amount } = cart[i].item.prices.find(
-        (e) => e.currency.label === selectedCurrency
-      );
-      totalPrice += amount * element.quantity;
-    });
 
-    if (totalquanity !== this.props.cart.quantity) {
-      this.props.updateQuanity(totalquanity);
-    }
-    console.log(this.props);
-
-    if (totalPrice !== this.props.cart.total) {
-      this.props.updateTotal(totalPrice);
-    }
-    return cart.map((e) => {
+    return cart.map((e, index) => {
       const price = e.item.prices.find(
         (e) => e.currency.label === selectedCurrency
       );
@@ -45,7 +35,7 @@ class CartModal extends Component {
       const quantity = e.quantity;
       return (
         <>
-          <div className={styles.cartItem}>
+          <div key={index} className={styles.cartItem}>
             <div>
               <p> {e.item.name}</p>
               <p> {e.item.brand}</p>
@@ -58,17 +48,20 @@ class CartModal extends Component {
                 return (
                   <>
                     <p>{name}</p>
-                    {e.items.map((e) => {
+                    {e.items.map((e, i) => {
                       const isSelected = e.id === selected;
                       if (name === 'Color') {
                         return (
                           <button
+                            key={i}
                             className={styles.colorAttribute}
                             style={{
                               backgroundColor: e.value,
                               color: e.value,
-                              border: isSelected && '1px solid #5ECE7B',
-                              scale: isSelected && 'calc(1.25)',
+                              border: isSelected
+                                ? '1px solid #5ECE7B'
+                                : undefined,
+                              scale: isSelected ? 'calc(1.25)' : undefined,
                             }}
                             onClick={() =>
                               this.props.selectAttributes([itemId, name, e.id])
@@ -80,10 +73,11 @@ class CartModal extends Component {
                       } else {
                         return (
                           <button
+                            key={i}
                             style={{
-                              backgroundColor: isSelected && 'black',
-                              color: isSelected && 'white',
-                              scale: isSelected && 'calc(1.25)',
+                              backgroundColor: isSelected ? 'black' : undefined,
+                              color: isSelected ? 'white' : undefined,
+                              scale: isSelected ? 'calc(1.25)' : undefined,
                             }}
                             onClick={() =>
                               this.props.selectAttributes([itemId, name, e.id])
@@ -128,15 +122,42 @@ class CartModal extends Component {
   };
 
   render() {
+    const cart = this.props.cart.cart;
+    const selectedCurrency = this.props.items.currentCurency.label;
+
+    const renderScroll = this.state.numberItemsInCart > 2;
+    let totalquanity = 0;
+    let totalPrice = 0;
+
+    cart.forEach((element, i) => {
+      totalquanity += element.quantity;
+      const { amount } = cart[i].item.prices.find(
+        (e) => e.currency.label === selectedCurrency
+      );
+      totalPrice += amount * element.quantity;
+    });
+
+    if (totalquanity !== this.props.cart.quantity) {
+      this.props.updateQuanity(totalquanity);
+    }
+
+    if (totalPrice !== this.props.cart.total) {
+      this.props.updateTotal(totalPrice);
+    }
     return (
       <div className={styles.dropdown}>
-        <button className={styles.dropbtn}>Cart</button>
+        <button className={styles.dropbtn}>
+          <img src={Logo} alt='logo' />
+          <>{this.props.cart.quanity}</>
+        </button>
         <div className={styles.dropdownContent}>
           <p>
             <b>My Bag.</b> {this.props.cart.quanity} items
           </p>
-          {this.items()}
 
+          <div className={renderScroll ? styles.items : undefined}>
+            {this.items()}
+          </div>
           <div className={styles.totalPrice}>
             <p> total price: </p>
             <p>

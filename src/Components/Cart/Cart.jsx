@@ -106,12 +106,37 @@ class Cart extends Component {
   };
 
   render() {
-    const { currentCategory } = this.props.items;
+    // const { currentCategory, currentCurency } = this.props.items;
+    const taxValue = Math.round(
+      (this.props.cart.tax / 100) * this.props.cart.total
+    );
+    const totalPrice = this.props.cart.total;
+    const taxProc = this.props.cart.tax;
+    const symbol = this.props.items.currentCurency.symbol;
+    const quanit = this.props.cart.quanity;
     return (
       <main className={styles.main}>
         <h1>CART</h1>
         <hr />
         {this.items()}
+        <div>
+          <p>
+            Tax {taxProc}%:
+            <b>
+              {symbol} {taxValue}
+            </b>
+          </p>
+          <p>
+            Quanit: <b>{quanit}</b>
+          </p>
+          <p>
+            Total:{' '}
+            <b>
+              {symbol} {totalPrice.toFixed(2)}
+            </b>
+          </p>
+          <button className={styles.orderBtn}> ORDER</button>
+        </div>
       </main>
     );
   }

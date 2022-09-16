@@ -46,7 +46,8 @@
 }
 
 .img {
-  max-width: 100px;
+  margin: auto;
+  max-width: 250px;
 }
 
 .colorAttribute {
@@ -67,4 +68,13 @@
   background-color: #8080802f;
   border: 1px solid black;
   padding: 5px;
+}
+
+.orderBtn {
+  background-color: #5ece7b;
+  color: #fff;
+  width: 209px;
+  height: 43px;
+  border: none;
+  margin-top: 20px;
 }

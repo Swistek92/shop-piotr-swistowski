@@ -47,74 +47,64 @@ class Product extends Component {
     return <img alt='img' src={item.gallery[this.state.select]} />;
   };
 
-  details = (item, Curency, addToCart) => {
+  details = (item, Curency, addToCart, attributes) => {
     const price = item.prices.find((e) => e.currency.label === Curency.label);
-    const attributes = JSON.parse(JSON.stringify(item.attributes));
-    attributes.forEach((element) => {
-      element.selected = '';
-    });
 
-    if (this.state.attributes.length < 1) {
-      this.setState({ attributes });
-    }
-
-    console.log(item.description);
     return (
       <div>
         <h3>{item.name}</h3>
         <p>{item.brand}</p>
-        {item.attributes.map((e, i) => {
-          if (!this.state.attributes[i]) return;
-
-          return (
-            <>
-              <p>{e.name}</p>
-              {e.items.map((e) => {
-                const selected = e.id;
-                const name = attributes[i].name;
-                const isSelected = e.id === this.state.attributes[i].selected;
-                if (name === 'Color') {
-                  return (
-                    <button
-                      className={styles.colorAttribute}
-                      style={{
-                        backgroundColor: e.value,
-                        color: e.value,
-                        border: isSelected && '1px solid #5ECE7B',
-                        scale: isSelected && 'calc(1.25)',
-                      }}
-                      onClick={() =>
-                        this.setState({
-                          attributes: this.state.attributes.map((e) =>
-                            e.name === name ? { ...e, selected } : e
-                          ),
-                        })
-                      }
-                    ></button>
-                  );
-                } else
-                  return (
-                    <div
-                      style={{
-                        backgroundColor: isSelected && 'black',
-                        color: isSelected && 'white',
-                      }}
-                      onClick={() =>
-                        this.setState({
-                          attributes: this.state.attributes.map((e) =>
-                            e.name === name ? { ...e, selected } : e
-                          ),
-                        })
-                      }
-                      className={styles.attributes}
-                    >
-                      {e.value}
-                    </div>
-                  );
-              })}
-            </>
-          );
-        })}
+        {this.state.attributes.length >= 1 &&
+          item.attributes.map((e, i) => {
+            return (
+              <>
+                <p>{e.name}</p>
+                {e.items.map((e) => {
+                  const selected = e.id;
+                  const name = attributes[i].name;
+                  const isSelected = e.id === this.state.attributes[i].selected;
+                  if (name === 'Color') {
+                    return (
+                      <button
+                        className={styles.colorAttribute}
+                        style={{
+                          backgroundColor: e.value,
+                          color: e.value,
+                          border: isSelected && '1px solid #5ECE7B',
+                          scale: isSelected && 'calc(1.25)',
+                        }}
+                        onClick={() =>
+                          this.setState({
+                            attributes: this.state.attributes.map((e) =>
+                              e.name === name ? { ...e, selected } : e
+                            ),
+                          })
+                        }
+                      ></button>
+                    );
+                  } else
+                    return (
+                      <div
+                        style={{
+                          backgroundColor: isSelected && 'black',
+                          color: isSelected && 'white',
+                        }}
+                        onClick={() =>
+                          this.setState({
+                            attributes: this.state.attributes.map((e) =>
+                              e.name === name ? { ...e, selected } : e
+                            ),
+                          })
+                        }
+                        className={styles.attributes}
+                      >
+                        {e.value}
+                      </div>
+                    );
+                })}
+              </>
+            );
+          })}
         <p>Price</p>
         <p>
           {price.amount} {Curency.label} {Curency.symbol}
@@ -129,19 +119,31 @@ class Product extends Component {
   };
 
   render() {
-    const parser = new DOMParser();
-
     const { products, currentCurency } = this.props.items;
     const { selectItem } = this.props.cart;
-    const item = products.find((e) => e.id === selectItem);
-    const addToCart = this.props.addToCart;
+    if (this.props.cart.selectItem === '') {
+      return <Navigate to='/' replace={true} />;
+    }
 
+    const item = products.find((e) => e.id === selectItem);
+
+    let attributes;
+    if (item.attributes.length >= 1) {
+      attributes = JSON.parse(JSON.stringify(item.attributes));
+      attributes.forEach((element) => {
+        element.selected = '';
+      });
+      if (this.state.attributes.length < 1) {
+        this.setState({ attributes });
+      }
+    }
+    const addToCart = this.props.addToCart;
     return (
       <main className={styles.main}>
         <div className={styles.imgs}>{this.imgs(item.gallery)}</div>
         <div className={styles.img}>{this.selectImg(item)}</div>
         <div className={styles.details}>
-          {this.details(item, currentCurency, addToCart)}
+          {this.details(item, currentCurency, addToCart, attributes)}
         </div>
         {this.state.redirect && <Navigate to='/cart' replace={true} />}
       </main>
